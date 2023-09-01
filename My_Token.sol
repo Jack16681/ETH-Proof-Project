@@ -23,7 +23,7 @@ contract MyToken {
         return true;
     }
 
-    function burn(uint256 value) public returns (bool) {
+    function burn(address to, uint256 value) public returns (bool) {
         require(balanceOf[msg.sender] >= value, "Insufficient balance for burning");
         
         balanceOf[msg.sender] -= value;
