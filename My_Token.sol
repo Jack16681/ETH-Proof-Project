@@ -12,10 +12,6 @@ contract My_Token {
     event Mint(address indexed to, uint256 value);
     event Burn(address indexed from, address indexed to, uint256 value); // Added 'to' address attribute
 
-    constructor() {
-        balanceOf[msg.sender] = totalSupply;
-    }
-
     function mint(address to, uint256 value) public {
         totalSupply += value;
         balanceOf[to] += value;
