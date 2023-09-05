@@ -17,37 +17,36 @@ Once you are on the Remix website, create a new file by clicking on the "+" icon
     // SPDX-License-Identifier: MIT
     pragma solidity ^0.8.18;
     
-    contract MyToken {
+    contract My_Token {
         string public name = "OMKAR";
         string public symbol = "OK";
         uint8 public decimals = 8;
         uint256 public totalSupply = 0; // Total supply with 18 decimal places
     
         mapping(address => uint256) public balanceOf;
-    
-        event Mint(address indexed to, uint256 value);
-        event Burn(address indexed from, uint256 value);
-    
-        constructor() {
-            balanceOf[msg.sender] = totalSupply;
-        }
-    
-        function mint(address to, uint256 value) public returns (bool) {
-            totalSupply += value;
-            balanceOf[to] += value;
-            emit Mint(to, value);
-            return true;
-        }
-    
-        function burn(uint256 value) public returns (bool) {
-            require(balanceOf[msg.sender] >= value, "Insufficient balance for burning");
-            
-            balanceOf[msg.sender] -= value;
-            totalSupply -= value;
-            emit Burn(msg.sender, value);
-            return true;
+
+    event Mint(address indexed to, uint256 value);
+    event Burn(address indexed from, address indexed to, uint256 value); // Added 'to' address attribute
+
+    constructor() {
+        balanceOf[msg.sender] = totalSupply;
+    }
+
+    function mint(address to, uint256 value) public {
+        totalSupply += value;
+        balanceOf[to] += value;
+    }
+
+    function burn(address from, uint256 value) public  {
+        require(balanceOf[from] >= value, "Insufficient balance for burning");
+        
+        balanceOf[from] -= value;
+        totalSupply -= value;
+        emit Burn(from, address(0), value); // Burning tokens by sending them to address(0)
         }
     }
+    
+        
 
 
 To compile the code, click on the "Solidity Compiler" tab in the left-hand sidebar. Make sure the "Compiler" option is set to "0.8.18" (or another compatible version), and then click on the "Compile My_Token.sol" button.
