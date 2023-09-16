@@ -4,24 +4,19 @@ pragma solidity ^0.8.18;
 contract My_Token {
     string public name = "OMKAR";
     string public symbol = "OK";
-    uint8 public decimals = 8;
-    uint256 public totalSupply = 0; // Total supply with 8 decimal places
+    uint public totalSupply = 0;
 
-    mapping(address => uint256) public balanceOf;
+    mapping(address => uint) public balanceOf;
 
-    event Mint(address indexed to, uint256 value);
-    event Burn(address indexed from, address indexed to, uint256 value); // Added 'to' address attribute
-
-    function mint(address to, uint256 value) public {
+    function mint(address to, uint value) public {
         totalSupply += value;
         balanceOf[to] += value;
     }
 
-    function burn(address from, uint256 value) public  {
-        require(balanceOf[from] >= value, "Insufficient balance for burning");
-        
-        balanceOf[from] -= value;
-        totalSupply -= value;
-        emit Burn(from, address(0), value); // Burning tokens by sending them to address(0)
+    function burn(address to, uint value) public {
+        if (balanceOf[to] >= value) {
+	    totalSupply -= value;
+            balanceOf[to] -= value;
+        }
     }
 }
